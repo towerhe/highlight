@@ -15,6 +15,10 @@ module Simplabs
       #
       attr_reader :language
 
+      # The options for pygments
+      #
+      attr_reader :options
+
       # Initializes a new {Simplabs::Highlight::PygmentsWrapper}.
       #
       # @param [String] code
@@ -22,9 +26,10 @@ module Simplabs
       # @param [String, Symbol] language
       #   the language the +code+ to highlight is in
       #
-      def initialize(code, language)
+      def initialize(code, language, options = nil) 
         @code     = code
         @language = language
+        @options  = options || { :nowrap => true }
       end
 
       # Highlights the {Simplabs::Highlight::PygmentsWrapper#code}.
@@ -34,7 +39,11 @@ module Simplabs
       #   if the language is not supported.
       #
       def highlight
-        command = "pygmentize -f html -O nowrap=true -l #{@language}"
+        options = [] 
+        @options.each do |key, val|
+          options << "#{key}=#{val}"
+        end
+        command = "pygmentize -f html -O #{options.join(',')} -l #{@language}"
         IO.popen(command, mode = 'r+') do |pygments|
           pygments << @code
           pygments.close_write

@@ -109,13 +109,13 @@ module Simplabs
     #   the highlighted +code+ or simply the HTML-escaped code if +language+
     #   is not supported.
     #
-    def self.highlight(language, code)
+    def self.highlight(language, code, options = nil)
       language = get_language_sym(language)
       return CGI.escapeHTML(code) unless language
       if Simplabs::Highlight.use_web_api
         highlight_with_web_api(language, code)
       else
-        Simplabs::Highlight::PygmentsWrapper.new(code, language).highlight
+        Simplabs::Highlight::PygmentsWrapper.new(code, language, options).highlight
       end
     end
 
@@ -156,11 +156,11 @@ module Simplabs
       #
       # @see Simplabs::Highlight.highlight
       #
-      def highlight_code(language, code = nil, &block)
+      def highlight_code(language, code = nil, options = nil, &block)
         raise ArgumentError.new('Either pass a srting containing the code or a block, not both!') if !code.nil? && block_given?
         raise ArgumentError.new('Pass a srting containing the code or a block!') if code.nil? && !block_given?
         code ||= yield
-        Simplabs::Highlight.highlight(language, code)
+        Simplabs::Highlight.highlight(language, code, options)
       end
 
     end
