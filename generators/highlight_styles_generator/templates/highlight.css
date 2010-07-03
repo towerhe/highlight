@@ -57,3 +57,5 @@
 .vg { color: #19177C }                     /* Name.Variable.Global */
 .vi { color: #19177C }                     /* Name.Variable.Instance */
 .il { color: #666666 }                     /* Literal.Number.Integer.Long */
+.linenos { background-color: #ddd }        /* Line numbers column */
+.hll { background-color: #ff4565 }         /* Highlight lines */
