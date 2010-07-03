@@ -41,6 +41,7 @@ module Simplabs
       def highlight
         options = [] 
         @options.each do |key, val|
+          val = "\"#{val}\"" if key.to_s == 'hl_lines'
           options << "#{key}=#{val}"
         end
         command = "pygmentize -f html -O #{options.join(',')} -l #{@language}"
